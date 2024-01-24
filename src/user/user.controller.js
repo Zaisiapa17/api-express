@@ -2,7 +2,8 @@ const express = require('express');
 const prisma = require('../db.connection.js');
 const {
     getAllUsers,
-    getUserById
+    getUserById,
+    createUser
 } = require("./user.service.js");
 
 const router = express.Router();
@@ -22,6 +23,23 @@ router.get("/:id", async (req, res) => {
         res.status(400).send(err.message);
     }
 });
+
+router.post("/", async (req, res) => {
+    try {
+        const newUserData = req.body;
+        const user = await createUser(newUserData);
+
+        res.send({
+            data: user,
+            message: "create user success",
+        });
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+});
+
+
+
 
 
 

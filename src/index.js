@@ -7,6 +7,8 @@ dotenv.config();
 
 const PORT = process.env.PORT;
 
+app.use(express.json());
+
 
 app.get('/api', ( req, res ) => {
     res.send('hello world');

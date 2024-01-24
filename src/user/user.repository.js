@@ -15,7 +15,21 @@ const findUserById = async (id) => {
     return user;
 };
 
+const insertUser = async (userData) => {
+    const user = await prisma.user.create({
+        data: {
+            name: userData.name,
+            email: userData.email,
+            phone: userData.phone,
+            image: userData.image,
+        },
+    });
+
+    return user;
+};
+
 module.exports = {
     findUsers,
-    findUserById
+    findUserById,
+    insertUser
 };

@@ -1,7 +1,8 @@
 const prisma = require("../db.connection.js");
 const {
     findUsers,
-    findUserById
+    findUserById,
+    insertUser
 } = require("./user.repository.js");
 
 const getAllUsers = async () => {
@@ -20,7 +21,14 @@ const getUserById = async (id) => {
     return User;
 };
 
+const createUser = async (newUserData) => {
+    const user = await insertUser(newUserData);
+
+    return user;
+};
+
 module.exports = {
     getAllUsers,
-    getUserById
+    getUserById,
+    createUser
 };
