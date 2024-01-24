@@ -5,7 +5,17 @@ const findUsers = async () => {
     return users;
 };
 
+const findUserById = async (id) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            id,
+        },
+    });
+
+    return user;
+};
 
 module.exports = {
-    findUsers
+    findUsers,
+    findUserById
 };
