@@ -1,10 +1,12 @@
 const prisma = require("../db.connection.js");
+const multer = require('multer');
 const {
     findUsers,
     findUserById,
     insertUser,
     deleteUser
 } = require("./user.repository.js");
+
 
 const getAllUsers = async () => {
     const users = await findUsers();
@@ -41,9 +43,20 @@ const deleteUserById = async (userId) => {
     await deleteUser(userId);
 };
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './src/files_upload/img');
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix + '.' + file.mimetype.split('/')[1])
+    }
+});
+
 module.exports = {
     getAllUsers,
     getUserById,
     createUser,
-    deleteUserById
+    deleteUserById,
+    storage
 };
