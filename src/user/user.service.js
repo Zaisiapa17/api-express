@@ -4,7 +4,8 @@ const {
     findUsers,
     findUserById,
     insertUser,
-    deleteUser
+    deleteUser,
+    editUser
 } = require("./user.repository.js");
 
 
@@ -43,6 +44,14 @@ const deleteUserById = async (userId) => {
     await deleteUser(userId);
 };
 
+const editUserById = async (id, userData, userImage) => {
+    await getUserById(id);
+
+    const user = await editUser(id, userData, userImage)
+
+    return user;
+};
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './src/files_upload/img');
@@ -58,5 +67,6 @@ module.exports = {
     getUserById,
     createUser,
     deleteUserById,
+    editUserById,
     storage
 };

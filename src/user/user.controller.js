@@ -2,14 +2,13 @@ const express = require('express');
 const prisma = require('../db.connection.js');
 const multer = require('multer');
 const path = require('path');
-
-
 const {
     getAllUsers,
     getUserById,
     createUser,
     deleteUserById,
-    storage
+    storage,
+    editUserById
 } = require("./user.service.js");
 
 
@@ -47,9 +46,6 @@ router.post("/", upload.fields([{ name: 'image', maxCount: 1 }]), async (req, re
         const newUserImage = req.files;
         const user = await createUser(newUserData, newUserImage);
 
-        // const metadata = await sharp(newUserImage.image[0].path).metadata();
-        // console.log(metadata);
-
         res.send({
             data: user,
             message: "create user success",
@@ -71,7 +67,29 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+router.put("/:id", upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res) => {
+    const userId = req.params.id;
+    const userData = req.body;
+    const userImage = req.files;
+    // console.log(userData);
 
+    if (
+        !(
+            userData.name &&
+            userData.email &&
+            userData.phone
+        )
+    ) {
+        return res.status(400).send("Some fields are missing");
+    }
+
+    const user = await editUserById(parseInt(userId), userData, userImage);
+
+    res.send({
+        data: user,
+        message: "edit user success",
+    });
+});
 
 
 module.exports = router;
