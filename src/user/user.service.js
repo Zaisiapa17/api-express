@@ -1,5 +1,6 @@
 const prisma = require("../db.connection.js");
 const multer = require('multer');
+// const fs = require('fs');
 const {
     findUsers,
     findUserById,
@@ -45,7 +46,7 @@ const deleteUserById = async (userId) => {
 };
 
 const editUserById = async (id, userData, userImage) => {
-    await getUserById(id);
+    // await getUserById(id);
 
     const user = await editUser(id, userData, userImage)
 

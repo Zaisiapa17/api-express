@@ -2,6 +2,7 @@ const express = require('express');
 const prisma = require('../db.connection.js');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const {
     getAllUsers,
     getUserById,
@@ -71,7 +72,7 @@ router.put("/:id", upload.fields([{ name: 'image', maxCount: 1 }]), async (req, 
     const userId = req.params.id;
     const userData = req.body;
     const userImage = req.files;
-    // console.log(userData);
+    // console.log(userImage);
 
     if (
         !(
@@ -80,6 +81,10 @@ router.put("/:id", upload.fields([{ name: 'image', maxCount: 1 }]), async (req, 
             userData.phone
         )
     ) {
+        if (userImage) {
+            await fs.unlinkSync(userImage.image[0].path);
+        }
+
         return res.status(400).send("Some fields are missing");
     }
 

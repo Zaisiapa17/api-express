@@ -110,6 +110,15 @@ const editUser = async (id, userData, userImage) => {
             id,
         },
     });
+
+    if (!userfetch) {
+        if (userImage) {
+            await fs.unlinkSync(userImage.image[0].path);
+        }
+        return {
+            "error":"user not found"
+        }
+    }
     
     const filename = userfetch.image;
     const filepath = `./src/files_upload/crop/${filename}`;
